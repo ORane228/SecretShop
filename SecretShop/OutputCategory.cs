@@ -2,46 +2,75 @@
 
 namespace SecretShop
 {
-    public static class OutputCategory
+    public class OutputCategoryModel
     {
-
-        static List<Plugin> TotalPlugin = Bd.GetData();
-
-        public static List<Plugin> SortedToPrice()
+        public string Status { get; set; }
+        public Dictionary<string, List<Plugin>> SortedPlugins { get; set; } = new Dictionary<string, List<Plugin>>();
+        public List<Plugin> TotalPlugin { get; set; } = new List<Plugin>
         {
-            List<Plugin> sorted = (from i in TotalPlugin
-                                  orderby i.Price
-                                  select i).ToList();
-            return sorted;
-        }
-
-        public static List<Plugin> SortedToCategory()
-        {
-            List<Plugin> list = new List<Plugin>();
-            for (int i = 0; i < TotalPlugin.Count; i++)
+            new Plugin
             {
-                if (TotalPlugin[i].Category == "Graphic")
-                {
-                    list.Add(TotalPlugin[i]);
-                }
-            }
-            return list;
+                Author = "W",
+                Category = "Graphic",
+                Description = "2",
+                Id = 1,
+                Image = "",
+                Name = "plug2",
+                PathToFile = "",
+                Price = 100,
+                Rating = 2,
+                ReleaseDate = DateTime.Now.AddDays(2),
+            },
+            new Plugin
+            {
+                Author = "W",
+                Category = "1",
+                Description = "1",
+                Id = 1,
+                Image = "",
+                Name = "plug1",
+                PathToFile = "",
+                Price = 200,
+                Rating = 3,
+                ReleaseDate = DateTime.Now.AddDays(4),
+            },
+            new Plugin
+            {
+                Author = "W",
+                Category = "3",
+                Description = "3",
+                Id = 3,
+                Image = "",
+                Name = "plug3",
+                PathToFile = "",
+                Price = 300,
+                Rating = 5,
+                ReleaseDate = DateTime.Now,
+            },
+        };
 
-        }
-
-        public static List<Plugin> SortedToRating()
+        public OutputCategoryModel()
         {
-            List<Plugin> sorted = (from i in TotalPlugin
-                                   orderby i.Rating descending
-                                   select i).ToList();
-            return sorted;
-
-
+            Status = "Ok";
+            try
+            {
+                SortedPlugins.Add("Price", SortedToPrice());
+                SortedPlugins.Add("Category", SortedToCategory());
+                SortedPlugins.Add("Rating", SortedToRating());
+            }
+            catch(Exception ex)
+            {
+                Status = $"ERROR: {ex.Message}";
+            }
         }
+        private List<Plugin> SortedToPrice() => (from i in TotalPlugin orderby i.Price select i).ToList();
 
+        private List<Plugin> SortedToCategory() => (from i in TotalPlugin where i.Category == "Graphic" select i).ToList();
 
+        private List<Plugin> SortedToRating() => (from i in TotalPlugin orderby i.Rating descending select i).ToList();
 
+        
     }
-    
+
 
 }

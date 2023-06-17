@@ -7,11 +7,16 @@ namespace SecretShop.Controllers
     [Controller]
     public class ApiToBdController : Controller
     {
+        
+        private OutputCategoryModel _outputCategory;
+        public ApiToBdController(OutputCategoryModel model)
+        {
+            _outputCategory = model;
+        }
 
-       public string Main()
-        {;
-            string json = JsonConvert.SerializeObject(OutputCategory.SortedToRating());
-            return json;
+        public string Main()
+        {
+            return JsonConvert.SerializeObject(_outputCategory);
         }
 
     }
